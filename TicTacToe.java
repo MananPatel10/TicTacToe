@@ -20,35 +20,53 @@ public class TicTacToe {
         System.out.println("\n--- Player Move ---");
         int slot = getUsersSlot();
         
-        // --- UC4 Logic: Convert and Display ---
+        // Convert to indices (UC4)
         int row = getRowFromSlot(slot);
         int col = getColFromSlot(slot);
-        System.out.println("Slot entered: " + slot);
-        System.out.println("Converted to -> Row: " + row + ", Column: " + col);
+        
+        // --- UC5 Logic: Validate ---
+        if (isValidMove(row, col)) {
+            System.out.println("Move is valid! (Symbol placement coming in the next UC)");
+        } else {
+            System.out.println("Invalid move! That slot is out of bounds or already taken.");
+        }
     }
 
     // ==========================================
-    // UC4 Methods: Index Conversion
+    // UC5 Method: Move Validation
     // ==========================================
     
     /**
-     * Converts slot number (1-9) into row index (0-2) using integer division.
+     * Checks if the given row and column are within bounds
+     * and if the target cell is empty.
      */
+    static boolean isValidMove(int row, int col) {
+        // 1. Check if out of bounds (less than 0 or greater than 2)
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            return false;
+        }
+        
+        // 2. Check if the cell is already occupied
+        if (board[row][col] != '-') {
+            return false;
+        }
+        
+        // If both checks pass, it's a good move!
+        return true;
+    }
+
+    // ==========================================
+    // Previous Use Case Methods (UC1 - UC4)
+    // ==========================================
+    
     static int getRowFromSlot(int slot) {
         return (slot - 1) / 3;
     }
 
-    /**
-     * Converts slot number (1-9) into column index (0-2) using modulo operation.
-     */
     static int getColFromSlot(int slot) {
         return (slot - 1) % 3;
     }
 
-    // ==========================================
-    // Previous Use Case Methods (UC1, UC2, UC3)
-    // ==========================================
-    
     static int getUsersSlot() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter a slot number (1-9): ");
