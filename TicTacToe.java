@@ -1,51 +1,63 @@
-// UC3 requires the Scanner tool to read keyboard input
 import java.util.Scanner; 
 import java.util.Random;
 
 public class TicTacToe {
 
-    // --- UC1 Variables ---
+    // --- Variables ---
     static char[][] board = new char[3][3];
-
-    // --- UC2 Variables ---
     static boolean isHumanTurn;
     static char humanSymbol;
     static char computerSymbol;
 
     public static void main(String[] args) {
-        // --- UC1 & UC2 Logic ---
+        // --- Setup ---
         initializeBoard();
         tossAndAssignSymbols();
         displayTossResult();
         printBoard();
         
-        // --- UC3 Logic (Testing the input) ---
-        // For now, we will just test getting the input. 
-        // Later we will loop this so the game keeps going!
+        // --- Play ---
         System.out.println("\n--- Player Move ---");
         int slot = getUsersSlot();
+        
+        // --- UC4 Logic: Convert and Display ---
+        int row = getRowFromSlot(slot);
+        int col = getColFromSlot(slot);
         System.out.println("Slot entered: " + slot);
+        System.out.println("Converted to -> Row: " + row + ", Column: " + col);
+    }
+
+    // ==========================================
+    // UC4 Methods: Index Conversion
+    // ==========================================
+    
+    /**
+     * Converts slot number (1-9) into row index (0-2) using integer division.
+     */
+    static int getRowFromSlot(int slot) {
+        return (slot - 1) / 3;
     }
 
     /**
-     * UC3: Reads an integer slot value from the user.
-     * Hint: Validation (checking if it's 1-9 and empty) will be added later!
+     * Converts slot number (1-9) into column index (0-2) using modulo operation.
      */
-    static int getUsersSlot() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a slot number (1-9): ");
-        int slot = scanner.nextInt();
-        return slot;
+    static int getColFromSlot(int slot) {
+        return (slot - 1) % 3;
     }
 
     // ==========================================
-    // UC2 Methods
+    // Previous Use Case Methods (UC1, UC2, UC3)
     // ==========================================
+    
+    static int getUsersSlot() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a slot number (1-9): ");
+        return scanner.nextInt();
+    }
+
     static void tossAndAssignSymbols() {
         Random random = new Random();
-        int toss = random.nextInt(2);
-
-        if (toss == 0) {
+        if (random.nextInt(2) == 0) {
             isHumanTurn = true;
             humanSymbol = 'X';
             computerSymbol = 'O';
@@ -66,9 +78,6 @@ public class TicTacToe {
         System.out.println("-------------------\n");
     }
 
-    // ==========================================
-    // UC1 Methods
-    // ==========================================
     static void initializeBoard() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
